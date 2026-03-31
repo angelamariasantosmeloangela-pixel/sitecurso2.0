@@ -1,432 +1,638 @@
 import React, { useMemo, useState } from "react";
+import {
+  Search,
+  ExternalLink,
+  ShieldCheck,
+  Award,
+  Sparkles,
+  Filter,
+  Star,
+  Moon,
+  Sun,
+  Heart,
+  X,
+  Cpu,
+  BadgeCheck,
+} from "lucide-react";
 
-const plataformas = [
+const providers = [
   {
     id: 1,
     nome: "Fundação Bradesco - Escola Virtual",
-    area: "Tecnologia",
     tipo: "Gratuito",
-    certificado: "Sim",
+    certificado: "Certificado gratuito com validação",
+    certificadoTipo: "gratuito",
     confianca: "Instituição reconhecida",
+    area: ["Tecnologia", "Administração", "Produtividade", "Educação"],
+    destaque: "Cursos livres online com emissão de certificado e validação digital.",
     link: "https://www.ev.org.br/",
-    descricao:
-      "Cursos gratuitos com certificado em tecnologia, produtividade, administração e educação.",
-    cursos: ["Excel", "Lógica de Programação", "Administração", "Educação Financeira"],
+    cursos: ["Excel", "Lógica de Programação", "Educação Financeira", "Administração"],
+    nota: 4.9,
+    descricaoLonga:
+      "Ótima plataforma para começar sem pagar nada. Tem cursos bem conhecidos e certificados valorizados para currículo e horas complementares.",
   },
   {
     id: 2,
     nome: "Sebrae",
-    area: "Negócios",
     tipo: "Gratuito e pago",
-    certificado: "Sim",
+    certificado: "Certificado disponível em diversos cursos",
+    certificadoTipo: "misto",
     confianca: "Referência em empreendedorismo",
+    area: ["Negócios", "Marketing", "Gestão", "Empreendedorismo"],
+    destaque: "Ótimo pra quem quer aprender a empreender e fortalecer o currículo.",
     link: "https://sebrae.com.br/",
-    descricao:
-      "Plataforma forte em empreendedorismo, marketing, vendas, gestão e carreira.",
-    cursos: ["Empreendedorismo", "Marketing Digital", "Vendas", "Gestão Financeira"],
+    cursos: ["Empreendedorismo", "Marketing Digital", "Gestão Financeira", "Vendas"],
+    nota: 4.8,
+    descricaoLonga:
+      "Muito forte para quem quer aprender sobre negócios, vendas, marketing e gestão com linguagem prática e direta.",
   },
   {
     id: 3,
     nome: "SENAI Play",
-    area: "Indústria",
-    tipo: "Misto",
-    certificado: "Sim",
-    confianca: "Muito forte em cursos técnicos",
+    tipo: "Baixo custo e gratuitos em alguns casos",
+    certificado: "Certificado em cursos elegíveis",
+    certificadoTipo: "misto",
+    confianca: "Muito forte na área técnica",
+    area: ["Indústria", "Automação", "Mecânica", "TI"],
+    destaque: "Perfeito pra quem curte cursos técnicos e áreas industriais.",
     link: "https://play.senai.br/",
-    descricao:
-      "Cursos técnicos e profissionalizantes voltados para indústria, mecânica e automação.",
-    cursos: ["Automação", "Mecânica", "Segurança do Trabalho", "Qualidade"],
+    cursos: ["Automação", "Qualidade", "Desenho Mecânico", "Segurança do Trabalho"],
+    nota: 4.7,
+    descricaoLonga:
+      "Excelente para quem gosta de área técnica, indústria, robótica, automação e cursos com pegada mais profissionalizante.",
   },
   {
     id: 4,
     nome: "Coursera",
-    area: "Tecnologia",
-    tipo: "Misto",
-    certificado: "Em muitos cursos",
+    tipo: "Gratuito para estudar / certificado geralmente pago",
+    certificado: "Professional Certificates e certificados por curso",
+    certificadoTipo: "pago",
     confianca: "Universidades e empresas grandes",
+    area: ["Tecnologia", "Dados", "IA", "Marketing", "Carreira"],
+    destaque: "Tem cursos de empresas como Google, IBM e Meta.",
     link: "https://www.coursera.org/",
-    descricao:
-      "Cursos de universidades e empresas conhecidas, com foco em tecnologia, dados e carreira.",
-    cursos: ["Python", "Data Analytics", "Marketing", "Cybersecurity"],
+    cursos: ["Google Cybersecurity", "Marketing Digital", "Data Analytics", "Python"],
+    nota: 4.9,
+    descricaoLonga:
+      "Ideal para quem quer conteúdo internacional, trilhas profissionais e cursos com empresas grandes e universidades famosas.",
   },
   {
     id: 5,
     nome: "Kultivi",
-    area: "Idiomas",
     tipo: "Gratuito",
-    certificado: "Em cursos selecionados",
+    certificado: "Certificado em cursos selecionados",
+    certificadoTipo: "gratuito",
     confianca: "Popular entre estudantes brasileiros",
+    area: ["Idiomas", "ENEM", "Direito", "Carreira"],
+    destaque: "Muito bom pra quem quer estudar idiomas e reforçar matérias.",
     link: "https://kultivi.com/",
-    descricao:
-      "Boa opção para estudar idiomas, ENEM, comunicação e desenvolvimento pessoal.",
     cursos: ["Inglês", "Espanhol", "ENEM", "Oratória"],
+    nota: 4.6,
+    descricaoLonga:
+      "Boa pedida pra estudantes que querem treinar idiomas, reforçar matérias e melhorar comunicação sem gastar.",
   },
   {
     id: 6,
     nome: "FGV Educação Executiva",
-    area: "Gestão",
     tipo: "Gratuito",
-    certificado: "Sim",
+    certificado: "Certificado em cursos gratuitos elegíveis",
+    certificadoTipo: "gratuito",
     confianca: "Instituição muito respeitada",
+    area: ["Gestão", "Economia", "Direito", "Marketing"],
+    destaque: "Ideal pra quem quer peso de instituição forte no currículo.",
     link: "https://educacao-executiva.fgv.br/cursos/gratuitos",
-    descricao:
-      "Cursos gratuitos com peso de instituição forte no currículo, focados em gestão e carreira.",
-    cursos: ["Gestão", "Marketing", "Economia", "Direito"],
+    cursos: ["Gestão", "Marketing", "Finanças", "Direito"],
+    nota: 4.8,
+    descricaoLonga:
+      "Boa opção para currículo mais forte, com nome conhecido e cursos voltados para gestão, negócios e carreira.",
   },
 ];
 
-const areas = ["Todas", ...new Set(plataformas.map((p) => p.area))];
+const areas = [
+  "Todas",
+  "Tecnologia",
+  "Negócios",
+  "Indústria",
+  "IA",
+  "Carreira",
+  "Educação",
+  "Marketing",
+  "Idiomas",
+  "Direito",
+];
 
-function Badge({ children, color = "#22d3ee", bg = "rgba(34,211,238,0.10)" }) {
+const certificadoTipos = ["Todos", "gratuito", "misto", "pago"];
+
+function Badge({ children, variant = "default", darkMode = true }) {
+  const palette = darkMode
+    ? {
+        default: "border-white/10 bg-white/5 text-slate-200",
+        cyan: "border-cyan-400/30 bg-cyan-400/10 text-cyan-300",
+        green: "border-emerald-400/30 bg-emerald-400/10 text-emerald-300",
+        yellow: "border-amber-400/30 bg-amber-400/10 text-amber-300",
+        pink: "border-fuchsia-400/30 bg-fuchsia-400/10 text-fuchsia-300",
+      }
+    : {
+        default: "border-slate-200 bg-slate-100 text-slate-700",
+        cyan: "border-cyan-200 bg-cyan-50 text-cyan-700",
+        green: "border-emerald-200 bg-emerald-50 text-emerald-700",
+        yellow: "border-amber-200 bg-amber-50 text-amber-700",
+        pink: "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700",
+      };
+
   return (
     <span
-      style={{
-        display: "inline-block",
-        padding: "8px 12px",
-        borderRadius: "999px",
-        border: `1px solid ${color}55`,
-        background: bg,
-        color,
-        fontSize: "12px",
-        fontWeight: "bold",
-      }}
+      className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${palette[variant]}`}
     >
       {children}
     </span>
   );
 }
 
-export default function App() {
-  const [busca, setBusca] = useState("");
-  const [filtroArea, setFiltroArea] = useState("Todas");
-
-  const resultados = useMemo(() => {
-    const termo = busca.toLowerCase().trim();
-
-    return plataformas.filter((p) => {
-      const bateBusca =
-        p.nome.toLowerCase().includes(termo) ||
-        p.area.toLowerCase().includes(termo) ||
-        p.tipo.toLowerCase().includes(termo) ||
-        p.certificado.toLowerCase().includes(termo) ||
-        p.confianca.toLowerCase().includes(termo) ||
-        p.descricao.toLowerCase().includes(termo) ||
-        p.cursos.some((curso) => curso.toLowerCase().includes(termo));
-
-      const bateArea = filtroArea === "Todas" || p.area === filtroArea;
-
-      return bateBusca && bateArea;
-    });
-  }, [busca, filtroArea]);
+function DetailsModal({ provider, onClose, darkMode, favorite, onToggleFavorite }) {
+  if (!provider) return null;
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background:
-          "radial-gradient(circle at top, rgba(34,211,238,0.14), transparent 25%), linear-gradient(180deg, #020617 0%, #0f172a 55%, #111827 100%)",
-        color: "white",
-        fontFamily: "Arial, sans-serif",
-      }}
-    >
-      <header
-        style={{
-          padding: "48px 24px 28px",
-          borderBottom: "1px solid rgba(255,255,255,0.08)",
-        }}
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm">
+      <div
+        className={`relative w-full max-w-2xl rounded-[28px] border p-6 shadow-2xl ${
+          darkMode ? "border-white/10 bg-slate-950 text-white" : "border-slate-200 bg-white text-slate-900"
+        }`}
       >
-        <div style={{ maxWidth: "1150px", margin: "0 auto" }}>
-          <div
-            style={{
-              display: "inline-block",
-              padding: "8px 14px",
-              borderRadius: "999px",
-              border: "1px solid rgba(34,211,238,0.25)",
-              background: "rgba(34,211,238,0.10)",
-              color: "#67e8f9",
-              fontSize: "13px",
-              fontWeight: "bold",
-              letterSpacing: "0.5px",
-            }}
-          >
-            ⚡ HACKER MASTER EDITION
+        <button
+          onClick={onClose}
+          className={`absolute right-4 top-4 rounded-full p-2 transition ${
+            darkMode ? "bg-white/5 text-white hover:bg-white/10" : "bg-slate-100 text-slate-700 hover:bg-slate-200"
+          }`}
+        >
+          <X className="h-5 w-5" />
+        </button>
+
+        <div className="pr-10">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="cyan" darkMode={darkMode}>
+              {provider.tipo}
+            </Badge>
+            <Badge darkMode={darkMode}>
+              <Star className="mr-1 h-3.5 w-3.5" /> {provider.nota}
+            </Badge>
           </div>
 
-          <h1
-            style={{
-              fontSize: "clamp(34px, 5vw, 60px)",
-              lineHeight: 1.05,
-              marginTop: "18px",
-              marginBottom: "14px",
-              fontWeight: 900,
-            }}
-          >
-            Site de Cursos Confiáveis
-          </h1>
-
-          <p
-            style={{
-              maxWidth: "820px",
-              color: "#cbd5e1",
-              fontSize: "18px",
-              lineHeight: 1.7,
-              margin: 0,
-            }}
-          >
-            Encontre plataformas confiáveis, veja se têm certificado, filtre por área
-            e acesse o site oficial com um visual mais insano.
+          <h3 className="mt-4 text-3xl font-black">{provider.nome}</h3>
+          <p className={`mt-3 leading-7 ${darkMode ? "text-slate-300" : "text-slate-600"}`}>
+            {provider.descricaoLonga}
           </p>
+        </div>
+
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className={`rounded-2xl p-4 ${darkMode ? "bg-white/5" : "bg-slate-50"}`}>
+            <p className={`text-sm ${darkMode ? "text-slate-400" : "text-slate-500"}`}>Certificação</p>
+            <p className="mt-1 font-semibold">{provider.certificado}</p>
+          </div>
+          <div className={`rounded-2xl p-4 ${darkMode ? "bg-white/5" : "bg-slate-50"}`}>
+            <p className={`text-sm ${darkMode ? "text-slate-400" : "text-slate-500"}`}>Confiabilidade</p>
+            <p className="mt-1 font-semibold">{provider.confianca}</p>
+          </div>
+        </div>
+
+        <div className={`mt-4 rounded-2xl p-4 ${darkMode ? "bg-white/5" : "bg-slate-50"}`}>
+          <p className={`text-sm ${darkMode ? "text-slate-400" : "text-slate-500"}`}>Áreas mais fortes</p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {provider.area.map((item) => (
+              <Badge key={item} darkMode={darkMode}>
+                {item}
+              </Badge>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <p className={`text-sm font-semibold ${darkMode ? "text-slate-300" : "text-slate-700"}`}>
+            Exemplos de cursos
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            {provider.cursos.map((curso) => (
+              <span
+                key={curso}
+                className={`rounded-full border px-3 py-1 text-sm ${
+                  darkMode ? "border-white/10 bg-white/5 text-slate-200" : "border-slate-200 bg-slate-100 text-slate-700"
+                }`}
+              >
+                {curso}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-3">
+          <a
+            href={provider.link}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition hover:scale-[1.02]"
+          >
+            <ExternalLink className="h-4 w-4" />
+            Acessar site oficial
+          </a>
+
+          <button
+            onClick={() => onToggleFavorite(provider.id)}
+            className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-3 font-semibold transition ${
+              favorite
+                ? "border-pink-400/30 bg-pink-400/10 text-pink-300"
+                : darkMode
+                ? "border-white/15 text-white hover:bg-white/5"
+                : "border-slate-200 text-slate-700 hover:bg-slate-100"
+            }`}
+          >
+            <Heart className={`h-4 w-4 ${favorite ? "fill-current" : ""}`} />
+            {favorite ? "Favoritado" : "Salvar favorito"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  const [busca, setBusca] = useState("");
+  const [areaAtiva, setAreaAtiva] = useState("Todas");
+  const [certificadoAtivo, setCertificadoAtivo] = useState("Todos");
+  const [darkMode, setDarkMode] = useState(true);
+  const [favoritos, setFavoritos] = useState([]);
+  const [selectedProvider, setSelectedProvider] = useState(null);
+
+  const filtrados = useMemo(() => {
+    const termo = busca.toLowerCase().trim();
+
+    return providers.filter((provider) => {
+      const bateBusca =
+        provider.nome.toLowerCase().includes(termo) ||
+        provider.tipo.toLowerCase().includes(termo) ||
+        provider.certificado.toLowerCase().includes(termo) ||
+        provider.confianca.toLowerCase().includes(termo) ||
+        provider.destaque.toLowerCase().includes(termo) ||
+        provider.descricaoLonga.toLowerCase().includes(termo) ||
+        provider.area.some((item) => item.toLowerCase().includes(termo)) ||
+        provider.cursos.some((curso) => curso.toLowerCase().includes(termo));
+
+      const bateArea = areaAtiva === "Todas" || provider.area.includes(areaAtiva);
+      const bateCertificado = certificadoAtivo === "Todos" || provider.certificadoTipo === certificadoAtivo;
+
+      return bateBusca && bateArea && bateCertificado;
+    });
+  }, [busca, areaAtiva, certificadoAtivo]);
+
+  const favoritosLista = providers.filter((provider) => favoritos.includes(provider.id));
+
+  function toggleFavorite(id) {
+    setFavoritos((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  }
+
+  const theme = darkMode
+    ? {
+        page: "bg-slate-950 text-white",
+        header: "border-white/10 bg-[radial-gradient(circle_at_top,#164e63_0%,#0f172a_35%,#020617_100%)]",
+        glass: "border-white/10 bg-white/5",
+        panel: "border-white/10 bg-slate-950/60",
+        card: "border-white/10 bg-gradient-to-b from-slate-900 to-slate-950",
+        textSoft: "text-slate-300",
+        textMuted: "text-slate-400",
+        footer: "border-white/10 bg-slate-950",
+      }
+    : {
+        page: "bg-slate-50 text-slate-900",
+        header: "border-slate-200 bg-[radial-gradient(circle_at_top,#cffafe_0%,#f8fafc_50%,#eef2ff_100%)]",
+        glass: "border-slate-200 bg-white/80",
+        panel: "border-slate-200 bg-white/90",
+        card: "border-slate-200 bg-gradient-to-b from-white to-slate-50",
+        textSoft: "text-slate-600",
+        textMuted: "text-slate-500",
+        footer: "border-slate-200 bg-white",
+      };
+
+  return (
+    <div className={`min-h-screen transition-colors ${theme.page}`}>
+      <header className={`border-b ${theme.header}`}>
+        <div className="mx-auto max-w-7xl px-6 py-16">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-300">
+              <Sparkles className="h-4 w-4" />
+              Site hacker supremo de cursos confiáveis
+            </div>
+
+            <button
+              onClick={() => setDarkMode((prev) => !prev)}
+              className={`inline-flex items-center gap-2 rounded-2xl border px-4 py-2 font-semibold transition ${theme.glass}`}
+            >
+              {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              {darkMode ? "Modo claro" : "Modo escuro"}
+            </button>
+          </div>
+
+          <div className="mt-8 grid gap-10 lg:grid-cols-2 lg:items-center">
+            <div>
+              <h1 className="text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
+                Encontre cursos online confiáveis com certificado sem cair em cilada
+              </h1>
+              <p className={`mt-5 max-w-2xl text-lg leading-8 ${theme.textSoft}`}>
+                Um catálogo moderno, estiloso e direto pra reunir plataformas conhecidas,
+                destacar certificado, área de estudo, confiança e jogar direto pro link oficial.
+              </p>
+
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="#plataformas"
+                  className="rounded-2xl bg-cyan-400 px-6 py-3 font-semibold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:scale-[1.02]"
+                >
+                  Explorar plataformas
+                </a>
+                <a
+                  href="#favoritos"
+                  className={`rounded-2xl border px-6 py-3 font-semibold transition ${theme.glass}`}
+                >
+                  Ver favoritos
+                </a>
+              </div>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className={`rounded-3xl border p-6 shadow-2xl backdrop-blur ${theme.glass}`}>
+                <ShieldCheck className="h-8 w-8 text-cyan-300" />
+                <h3 className="mt-4 text-xl font-bold">Mais confiança</h3>
+                <p className={`mt-2 ${theme.textSoft}`}>Foco em instituições conhecidas e links oficiais.</p>
+              </div>
+              <div className={`rounded-3xl border p-6 shadow-2xl backdrop-blur ${theme.glass}`}>
+                <Award className="h-8 w-8 text-emerald-300" />
+                <h3 className="mt-4 text-xl font-bold">Certificado em destaque</h3>
+                <p className={`mt-2 ${theme.textSoft}`}>Bate o olho e já vê como funciona a certificação.</p>
+              </div>
+              <div className={`rounded-3xl border p-6 shadow-2xl backdrop-blur sm:col-span-2 ${theme.glass}`}>
+                <Cpu className="h-8 w-8 text-fuchsia-300" />
+                <h3 className="mt-4 text-xl font-bold">Visual hacker supremo</h3>
+                <p className={`mt-2 ${theme.textSoft}`}>
+                  Busca inteligente, favoritos, modal de detalhes e visual forte pra parecer produto real.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 
-      <main style={{ maxWidth: "1150px", margin: "0 auto", padding: "28px 24px 40px" }}>
-        <section
-          style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            borderRadius: "24px",
-            padding: "20px",
-            boxShadow: "0 18px 50px rgba(0,0,0,0.25)",
-            marginBottom: "26px",
-          }}
-        >
-          <div
-            style={{
-              display: "grid",
-              gap: "14px",
-              gridTemplateColumns: "1.5fr 0.7fr",
-            }}
-          >
-            <input
-              type="text"
-              placeholder="Buscar por nome, área, tipo, certificado ou curso..."
-              value={busca}
-              onChange={(e) => setBusca(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "16px",
-                borderRadius: "16px",
-                border: "1px solid rgba(255,255,255,0.10)",
-                background: "rgba(255,255,255,0.05)",
-                color: "white",
-                outline: "none",
-                fontSize: "16px",
-              }}
-            />
+      <main>
+        <section id="filtros" className="mx-auto max-w-7xl px-6 py-12">
+          <div className={`rounded-[28px] border p-5 shadow-2xl backdrop-blur ${theme.glass}`}>
+            <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr_1fr]">
+              <div className={`rounded-2xl border px-4 py-3 ${theme.panel}`}>
+                <div className={`flex items-center gap-3 ${theme.textSoft}`}>
+                  <Search className="h-5 w-5" />
+                  <input
+                    value={busca}
+                    onChange={(e) => setBusca(e.target.value)}
+                    placeholder="Buscar por curso, área, plataforma ou certificado..."
+                    className={`w-full bg-transparent outline-none ${
+                      darkMode ? "placeholder:text-slate-500" : "placeholder:text-slate-400"
+                    }`}
+                  />
+                </div>
+              </div>
 
-            <select
-              value={filtroArea}
-              onChange={(e) => setFiltroArea(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "16px",
-                borderRadius: "16px",
-                border: "1px solid rgba(255,255,255,0.10)",
-                background: "#0f172a",
-                color: "white",
-                outline: "none",
-                fontSize: "16px",
-              }}
-            >
-              {areas.map((area) => (
-                <option key={area} value={area}>
-                  {area}
-                </option>
-              ))}
-            </select>
+              <div className={`rounded-2xl border px-4 py-3 ${theme.panel}`}>
+                <div className={`mb-2 flex items-center gap-2 text-sm ${theme.textMuted}`}>
+                  <Filter className="h-4 w-4" /> Área
+                </div>
+                <select
+                  value={areaAtiva}
+                  onChange={(e) => setAreaAtiva(e.target.value)}
+                  className="w-full bg-transparent outline-none"
+                >
+                  {areas.map((area) => (
+                    <option key={area} value={area} className={darkMode ? "bg-slate-900" : "bg-white"}>
+                      {area}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className={`rounded-2xl border px-4 py-3 ${theme.panel}`}>
+                <div className={`mb-2 flex items-center gap-2 text-sm ${theme.textMuted}`}>
+                  <Award className="h-4 w-4" /> Certificado
+                </div>
+                <select
+                  value={certificadoAtivo}
+                  onChange={(e) => setCertificadoAtivo(e.target.value)}
+                  className="w-full bg-transparent outline-none"
+                >
+                  {certificadoTipos.map((tipo) => (
+                    <option key={tipo} value={tipo} className={darkMode ? "bg-slate-900" : "bg-white"}>
+                      {tipo}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
           </div>
         </section>
 
-        <section style={{ marginBottom: "20px" }}>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              flexWrap: "wrap",
-              gap: "12px",
-            }}
-          >
-            <div>
-              <h2 style={{ margin: 0, fontSize: "28px" }}>Plataformas recomendadas</h2>
-              <p style={{ marginTop: "8px", color: "#94a3b8" }}>
-                Mostrando {resultados.length} resultado(s)
-              </p>
+        <section id="favoritos" className="mx-auto max-w-7xl px-6 pb-6">
+          <div className={`rounded-[28px] border p-6 shadow-xl ${theme.glass}`}>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.2em] text-fuchsia-400">
+                  Favoritos
+                </p>
+                <h2 className="mt-2 text-2xl font-black">Plataformas salvas por você</h2>
+              </div>
+              <Badge variant="pink" darkMode={darkMode}>
+                {favoritosLista.length} favorito(s)
+              </Badge>
             </div>
 
-            <Badge color="#4ade80" bg="rgba(74,222,128,0.10)">
-              ✅ Links oficiais e confiáveis
-            </Badge>
+            {favoritosLista.length === 0 ? (
+              <p className={`mt-4 ${theme.textSoft}`}>
+                Tu ainda não salvou nenhum favorito. Clica no coração pra guardar as plataformas mais massa.
+              </p>
+            ) : (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {favoritosLista.map((provider) => (
+                  <button
+                    key={provider.id}
+                    onClick={() => setSelectedProvider(provider)}
+                    className={`rounded-full border px-4 py-2 text-sm font-semibold transition ${theme.panel}`}
+                  >
+                    {provider.nome}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
-        {resultados.length === 0 ? (
-          <div
-            style={{
-              padding: "26px",
-              borderRadius: "22px",
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              color: "#cbd5e1",
-            }}
-          >
-            Nenhuma plataforma encontrada. Tenta pesquisar por tecnologia, gestão,
-            idiomas, marketing ou certificado.
+        <section id="plataformas" className="mx-auto max-w-7xl px-6 pb-20">
+          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-cyan-300">
+                Plataformas recomendadas
+              </p>
+              <h2 className="mt-3 text-3xl font-black">As melhores opções pra começar</h2>
+              <p className={`mt-3 ${theme.textMuted}`}>Mostrando {filtrados.length} plataforma(s) filtrada(s)</p>
+            </div>
+            <div className="rounded-2xl border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-sm text-emerald-300">
+              ✅ Curadoria focada em confiança e link oficial
+            </div>
           </div>
-        ) : (
-          <section
-            style={{
-              display: "grid",
-              gap: "20px",
-              gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
-            }}
-          >
-            {resultados.map((p) => (
-              <article
-                key={p.id}
-                style={{
-                  background: "linear-gradient(180deg, #111827, #0b1220)",
-                  border: "1px solid rgba(255,255,255,0.08)",
-                  borderRadius: "26px",
-                  padding: "22px",
-                  boxShadow: "0 16px 40px rgba(0,0,0,0.22)",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "start",
-                    gap: "12px",
-                  }}
-                >
-                  <div>
-                    <h3 style={{ margin: 0, fontSize: "24px", lineHeight: 1.2 }}>
-                      {p.nome}
-                    </h3>
-                    <p
-                      style={{
-                        marginTop: "12px",
-                        color: "#cbd5e1",
-                        lineHeight: 1.6,
-                      }}
-                    >
-                      {p.descricao}
-                    </p>
-                  </div>
 
-                  <Badge>{p.tipo}</Badge>
-                </div>
+          {filtrados.length === 0 ? (
+            <div className={`rounded-[28px] border p-8 text-center shadow-2xl ${theme.card}`}>
+              <h3 className="text-2xl font-bold">Nenhum resultado encontrado</h3>
+              <p className={`mt-3 ${theme.textSoft}`}>
+                Tenta buscar por tecnologia, certificado gratuito, marketing, negócios ou automação.
+              </p>
+            </div>
+          ) : (
+            <div className="grid gap-6 lg:grid-cols-2">
+              {filtrados.map((provider) => {
+                const isFavorite = favoritos.includes(provider.id);
 
-                <div
-                  style={{
-                    display: "grid",
-                    gap: "12px",
-                    gridTemplateColumns: "1fr 1fr",
-                    marginTop: "18px",
-                  }}
-                >
-                  <div
-                    style={{
-                      background: "rgba(255,255,255,0.05)",
-                      borderRadius: "16px",
-                      padding: "14px",
-                    }}
+                return (
+                  <article
+                    key={provider.id}
+                    className={`group rounded-[28px] border p-6 shadow-2xl transition hover:-translate-y-1 ${theme.card} ${
+                      darkMode ? "hover:border-cyan-400/30" : "hover:border-cyan-300"
+                    }`}
                   >
-                    <small style={{ color: "#94a3b8" }}>Área</small>
-                    <div style={{ marginTop: "6px", fontWeight: "bold" }}>{p.area}</div>
-                  </div>
-
-                  <div
-                    style={{
-                      background: "rgba(255,255,255,0.05)",
-                      borderRadius: "16px",
-                      padding: "14px",
-                    }}
-                  >
-                    <small style={{ color: "#94a3b8" }}>Certificado</small>
-                    <div style={{ marginTop: "6px", fontWeight: "bold" }}>
-                      {p.certificado}
+                    <div className="flex flex-wrap items-start justify-between gap-4">
+                      <div>
+                        <h3 className="text-2xl font-black">{provider.nome}</h3>
+                        <p className={`mt-2 max-w-2xl ${theme.textSoft}`}>{provider.destaque}</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="cyan" darkMode={darkMode}>
+                          {provider.tipo}
+                        </Badge>
+                        <button
+                          onClick={() => toggleFavorite(provider.id)}
+                          className={`rounded-full border p-2 transition ${
+                            isFavorite
+                              ? "border-pink-400/30 bg-pink-400/10 text-pink-300"
+                              : theme.glass
+                          }`}
+                        >
+                          <Heart className={`h-4 w-4 ${isFavorite ? "fill-current" : ""}`} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div
-                  style={{
-                    marginTop: "14px",
-                    background: "rgba(255,255,255,0.05)",
-                    borderRadius: "16px",
-                    padding: "14px",
-                  }}
-                >
-                  <small style={{ color: "#94a3b8" }}>Confiabilidade</small>
-                  <div style={{ marginTop: "6px", fontWeight: "bold" }}>{p.confianca}</div>
-                </div>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {provider.certificadoTipo === "gratuito" && (
+                        <Badge variant="green" darkMode={darkMode}>
+                          Certificado gratuito
+                        </Badge>
+                      )}
+                      {provider.certificadoTipo === "misto" && (
+                        <Badge variant="yellow" darkMode={darkMode}>
+                          Certificado misto
+                        </Badge>
+                      )}
+                      {provider.certificadoTipo === "pago" && (
+                        <Badge variant="pink" darkMode={darkMode}>
+                          Certificado pago
+                        </Badge>
+                      )}
+                      <Badge darkMode={darkMode}>
+                        <Star className="mr-1 h-3.5 w-3.5" /> {provider.nota}
+                      </Badge>
+                    </div>
 
-                <div style={{ marginTop: "16px" }}>
-                  <small style={{ color: "#94a3b8" }}>Cursos em destaque</small>
-                  <div
-                    style={{
-                      marginTop: "10px",
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "8px",
-                    }}
-                  >
-                    {p.cursos.map((curso) => (
-                      <span
-                        key={curso}
-                        style={{
-                          padding: "8px 12px",
-                          borderRadius: "999px",
-                          background: "rgba(255,255,255,0.06)",
-                          border: "1px solid rgba(255,255,255,0.08)",
-                          color: "#e2e8f0",
-                          fontSize: "13px",
-                        }}
+                    <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                      <div className={`rounded-2xl p-4 ${darkMode ? "bg-white/5" : "bg-slate-100"}`}>
+                        <p className={`text-sm ${theme.textMuted}`}>Certificação</p>
+                        <p className="mt-1 font-semibold">{provider.certificado}</p>
+                      </div>
+                      <div className={`rounded-2xl p-4 ${darkMode ? "bg-white/5" : "bg-slate-100"}`}>
+                        <p className={`text-sm ${theme.textMuted}`}>Confiabilidade</p>
+                        <p className="mt-1 font-semibold">{provider.confianca}</p>
+                      </div>
+                    </div>
+
+                    <div className={`mt-4 rounded-2xl p-4 ${darkMode ? "bg-white/5" : "bg-slate-100"}`}>
+                      <p className={`text-sm ${theme.textMuted}`}>Áreas mais fortes</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {provider.area.map((item) => (
+                          <Badge key={item} darkMode={darkMode}>
+                            {item}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-5">
+                      <p className={`text-sm font-semibold ${theme.textSoft}`}>Exemplos de cursos:</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {provider.cursos.map((curso) => (
+                          <span
+                            key={curso}
+                            className={`rounded-full border px-3 py-1 text-sm ${
+                              darkMode
+                                ? "border-white/10 bg-white/5 text-slate-200"
+                                : "border-slate-200 bg-slate-100 text-slate-700"
+                            }`}
+                          >
+                            {curso}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      <a
+                        href={provider.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 rounded-2xl bg-cyan-400 px-5 py-3 font-bold text-slate-950 transition group-hover:scale-[1.02]"
                       >
-                        {curso}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <a
-                  href={p.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    display: "inline-block",
-                    marginTop: "20px",
-                    background: "#22d3ee",
-                    color: "#0f172a",
-                    textDecoration: "none",
-                    fontWeight: "bold",
-                    padding: "12px 18px",
-                    borderRadius: "14px",
-                  }}
-                >
-                  Acessar site oficial
-                </a>
-              </article>
-            ))}
-          </section>
-        )}
+                        <ExternalLink className="h-4 w-4" />
+                        Acessar site oficial
+                      </a>
+                      <button
+                        onClick={() => setSelectedProvider(provider)}
+                        className={`inline-flex items-center gap-2 rounded-2xl border px-5 py-3 font-semibold transition ${theme.glass}`}
+                      >
+                        <BadgeCheck className="h-4 w-4" />
+                        Ver detalhes
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+        </section>
       </main>
 
-      <footer
-        style={{
-          borderTop: "1px solid rgba(255,255,255,0.08)",
-          padding: "24px",
-          textAlign: "center",
-          color: "#94a3b8",
-        }}
-      >
-        <p style={{ margin: 0 }}>
-          Desenvolvido por{" "}
-          <strong style={{ color: "white" }}>Alexsandro Souza Melo</strong>
-        </p>
+      <footer className={`border-t ${theme.footer}`}>
+        <div className={`mx-auto max-w-7xl px-6 py-8 text-center ${theme.textMuted}`}>
+          <p className="text-sm">
+            Desenvolvido por{" "}
+            <span className={darkMode ? "font-semibold text-white" : "font-semibold text-slate-900"}>
+              Alexsandro Souza Melo
+            </span>
+          </p>
+          <p className="mt-2 text-sm">
+            Projeto feito pra encontrar cursos confiáveis com certificado, link oficial e visual supremo.
+          </p>
+        </div>
       </footer>
+
+      <DetailsModal
+        provider={selectedProvider}
+        onClose={() => setSelectedProvider(null)}
+        darkMode={darkMode}
+        favorite={selectedProvider ? favoritos.includes(selectedProvider.id) : false}
+        onToggleFavorite={toggleFavorite}
+      />
     </div>
   );
 }
