@@ -1,0 +1,127 @@
+import React, { useState } from "react";
+import { Search, Star } from "lucide-react";
+
+export default function App() {
+  const [busca, setBusca] = useState("");
+
+  const cursos = [
+    {
+      nome: "Curso de React",
+      descricao: "Aprenda React do zero",
+      nota: 4.8,
+      link: "https://react.dev"
+    },
+    {
+      nome: "Curso de JavaScript",
+      descricao: "Domine JS moderno",
+      nota: 4.7,
+      link: "https://developer.mozilla.org/pt-BR/docs/Web/JavaScript"
+    },
+    {
+      nome: "Curso de Python",
+      descricao: "Do básico ao avançado",
+      nota: 4.9,
+      link: "https://python.org"
+    },
+    {
+      nome: "Curso de HTML e CSS",
+      descricao: "Crie sites profissionais",
+      nota: 4.6,
+      link: "https://developer.mozilla.org"
+    }
+  ];
+
+  const filtrados = cursos.filter((c) =>
+    c.nome.toLowerCase().includes(busca.toLowerCase())
+  );
+
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.titulo}>🎓 Cursos Online</h1>
+
+      <div style={styles.searchBox}>
+        <Search size={20} />
+        <input
+          type="text"
+          placeholder="Buscar curso..."
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          style={styles.input}
+        />
+      </div>
+
+      <div style={styles.grid}>
+        {filtrados.map((curso, index) => (
+          <div key={index} style={styles.card}>
+            <h2>{curso.nome}</h2>
+            <p>{curso.descricao}</p>
+
+            <div style={styles.nota}>
+              <Star size={16} /> {curso.nota}
+            </div>
+
+            <a href={curso.link} target="_blank" style={styles.botao}>
+              Acessar
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  container: {
+    background: "#0f172a",
+    color: "white",
+    minHeight: "100vh",
+    padding: "40px",
+    fontFamily: "Arial"
+  },
+  titulo: {
+    textAlign: "center",
+    marginBottom: "20px"
+  },
+  searchBox: {
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    background: "#1e293b",
+    padding: "10px",
+    borderRadius: "8px",
+    marginBottom: "20px"
+  },
+  input: {
+    background: "transparent",
+    border: "none",
+    outline: "none",
+    color: "white",
+    width: "100%"
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
+    gap: "20px"
+  },
+  card: {
+    background: "#1e293b",
+    padding: "20px",
+    borderRadius: "10px",
+    boxShadow: "0 0 10px rgba(0,0,0,0.5)"
+  },
+  nota: {
+    display: "flex",
+    alignItems: "center",
+    gap: "5px",
+    margin: "10px 0"
+  },
+  botao: {
+    display: "inline-block",
+    marginTop: "10px",
+    padding: "10px",
+    background: "#22c55e",
+    color: "white",
+    textDecoration: "none",
+    borderRadius: "5px"
+  }
+};
